@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { motion, Reorder } from 'framer-motion';
 import { Widget } from '../../types/widget';
 
-// Static widget definitions
 const widgetMap: Record<string, Widget> = {
   weather: {
     id: 'weather',
@@ -31,7 +30,7 @@ export default function DraggableDashboard() {
       axis="y"
       values={order}
       onReorder={setOrder}
-      className="space-y-4"
+      className="space-y-6"
     >
       {order.map((id) => {
         const widget = widgetMap[id];
@@ -40,10 +39,12 @@ export default function DraggableDashboard() {
             key={widget.id}
             value={widget.id}
             as="div"
-            className="bg-white dark:bg-gray-800 p-4 rounded shadow cursor-move"
+            className="bg-black/70 border border-purple-700 backdrop-blur-lg p-6 rounded-xl shadow-md hover:shadow-purple-500 text-white cursor-move transition-all"
           >
             <motion.div layout>
-              <h3 className="font-semibold mb-2">{widget.title}</h3>
+              <h3 className="text-xl font-bold mb-2 text-purple-400 neon-text">
+                {widget.title}
+              </h3>
               {widget.component}
             </motion.div>
           </Reorder.Item>

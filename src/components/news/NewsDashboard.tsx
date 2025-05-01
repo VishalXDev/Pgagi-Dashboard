@@ -23,8 +23,8 @@ export default function NewsDashboard() {
   };
 
   return (
-    <div>
-      <div className="flex gap-4 mb-6">
+    <div className="p-6 bg-black/60 backdrop-blur rounded-xl shadow-lg text-white">
+      <div className="flex gap-4 mb-6 flex-wrap">
         {categories.map((cat) => (
           <button
             key={cat}
@@ -33,19 +33,19 @@ export default function NewsDashboard() {
               setPage(1);
               refetch();
             }}
-            className={`px-4 py-2 rounded-md ${
+            className={`px-4 py-2 rounded-full border transition font-medium text-sm tracking-wide ${
               cat === selectedCategory
-                ? 'bg-primary text-white'
-                : 'bg-gray-200 dark:bg-gray-700 text-black dark:text-white'
+                ? 'bg-purple-700 text-white shadow-lg'
+                : 'bg-gray-800 text-gray-300 hover:bg-purple-900 hover:text-purple-300'
             }`}
           >
-            {cat}
+            {cat.toUpperCase()}
           </button>
         ))}
       </div>
 
-      {isLoading && <p>Loading...</p>}
-      {isError && <p>Error loading news.</p>}
+      {isLoading && <p className="text-gray-400">Loading...</p>}
+      {isError && <p className="text-red-400">Error loading news.</p>}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {data?.articles?.map((article) => (
@@ -56,7 +56,7 @@ export default function NewsDashboard() {
       {data && data.totalResults && data.totalResults > page * 10 && (
         <div className="flex justify-center mt-6">
           <button
-            className="px-4 py-2 bg-secondary text-white rounded hover:bg-secondary/90"
+            className="px-6 py-2 bg-purple-700 hover:bg-purple-800 text-white rounded-full shadow-lg transition"
             onClick={() => setPage((prev) => prev + 1)}
           >
             Load More

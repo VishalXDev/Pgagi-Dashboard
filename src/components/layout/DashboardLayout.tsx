@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import cn from "../../utils/cn"; // Corrected import
+import cn from "../../utils/cn";
 import { useTheme } from "../../hooks/useTheme";
 import { useTranslation } from "react-i18next";
 
@@ -10,7 +10,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { pathname } = useRouter();
   const { theme, toggleTheme } = useTheme();
   const { t, i18n } = useTranslation();
-  const { data: session, status } = useSession(); // Added status to handle loading state
+  const { data: session, status } = useSession();
 
   const navLinks = [
     { name: t("weather"), path: "/weather" },
@@ -18,27 +18,25 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     { name: t("finance"), path: "/finance" },
   ];
 
-  if (status === "loading") {
-    return <div>Loading...</div>; // Handle loading state
-  }
+  if (status === "loading") return <div>Loading...</div>;
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden font-sans bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white dark:text-white transition-all duration-300">
       {/* Sidebar */}
-      <aside className="w-64 bg-primary text-white flex flex-col sticky top-0 h-full shadow-lg">
-        <div className="text-xl font-bold p-4 border-b border-white/20">
-          PGAGI Dashboard
+      <aside className="w-64 bg-black/80 backdrop-blur text-white border-r border-gray-700 shadow-2xl flex flex-col">
+        <div className="text-1xl font-extrabold text-center py-6 tracking-wider neon-text">
+          ⚡PGAGI-DASHBOARD
         </div>
-        <nav className="flex flex-col gap-2 p-4">
+        <nav className="flex flex-col gap-3 px-4">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.path}
               className={cn(
-                "px-4 py-2 rounded hover:bg-primary/80 transition",
+                "px-4 py-2 rounded-lg text-sm transition-all duration-200 hover:scale-105 hover:bg-purple-700/20 hover:text-purple-400",
                 pathname === link.path
-                  ? "bg-white text-primary font-semibold"
-                  : "text-white"
+                  ? "bg-purple-700 text-white shadow-lg"
+                  : "text-gray-300"
               )}
             >
               {link.name}
@@ -48,47 +46,47 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-gray-100 dark:bg-gray-900 overflow-y-auto">
+      <div className="flex-1 flex flex-col bg-gray-100 dark:bg-gray-950 text-black dark:text-white transition-all">
         {/* Header */}
-        <header className="sticky top-0 z-10 bg-white dark:bg-gray-800 shadow px-6 py-4 flex items-center justify-between">
-          {/* Search */}
+        <header className="sticky top-0 z-20 bg-white dark:bg-black shadow-xl px-6 py-4 flex items-center justify-between border-b border-gray-300 dark:border-gray-700">
           <input
             type="text"
             placeholder={t("search")}
-            className="px-4 py-2 border rounded-md w-1/3 dark:bg-gray-700 dark:text-white"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md w-1/3 bg-white dark:bg-gray-800 text-black dark:text-white"
           />
 
           <div className="flex items-center gap-4">
-            {/* Language Switch */}
+            {/* Language Selector */}
             <select
               value={i18n.language}
               onChange={(e) => i18n.changeLanguage(e.target.value)}
-              className="border rounded p-1 bg-white text-sm"
+              className="border rounded p-1 text-sm bg-gray-200 dark:bg-gray-700 text-black dark:text-white"
             >
               <option value="en">EN</option>
               <option value="es">ES</option>
             </select>
 
-            {/* Theme Toggle */}
+            {/* Emoji Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="text-sm px-3 py-1 bg-secondary text-white rounded hover:bg-secondary/90"
+              title="Toggle theme"
+              className="text-xl hover:scale-110 transition"
             >
-              {theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+              {theme === "dark" ? "🌞" : "🌙"}
             </button>
 
-            {/* Auth */}
+            {/* User Auth */}
             {session?.user ? (
               <div className="flex items-center gap-2">
                 <img
-                  src={session.user.image || "/path/to/default-avatar.jpg"} // Default avatar fallback
+                  src={session.user.image || "/avatar.png"}
                   alt="avatar"
-                  className="w-8 h-8 rounded-full"
+                  className="w-8 h-8 rounded-full border border-white"
                 />
-                <span>{session.user.name}</span>
+                <span className="font-medium">{session.user.name}</span>
                 <button
                   onClick={() => signOut()}
-                  className="text-sm bg-red-500 px-3 py-1 text-white rounded"
+                  className="text-sm bg-red-600 hover:bg-red-700 px-3 py-1 text-white rounded shadow"
                 >
                   {t("signOut")}
                 </button>
@@ -96,7 +94,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             ) : (
               <button
                 onClick={() => signIn()}
-                className="text-sm bg-primary px-3 py-1 text-white rounded"
+                className="text-sm bg-purple-700 px-3 py-1 text-white rounded shadow"
               >
                 {t("signIn")}
               </button>

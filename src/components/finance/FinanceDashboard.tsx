@@ -38,22 +38,22 @@ export default function FinanceDashboard() {
   }, [data]);
 
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-4">Stock Market - {symbol}</h2>
+    <div className="bg-gradient-to-br from-gray-900 via-black to-gray-800 p-6 rounded-xl shadow-xl text-white">
+      <h2 className="text-2xl font-bold mb-4 text-purple-300 neon-text">📈 Stock Market - {symbol}</h2>
 
-      <div className="flex gap-4 items-center mb-4">
+      <div className="flex gap-4 items-center mb-6">
         <input
           value={symbol}
           onChange={(e) => setSymbol(e.target.value.toUpperCase())}
-          className="border p-2 rounded"
+          className="border border-purple-700 bg-black/50 text-white px-4 py-2 rounded-lg w-1/2 focus:outline-none focus:ring-2 focus:ring-purple-500"
           placeholder="Enter stock symbol (e.g., AAPL)"
         />
       </div>
 
-      {isFetching && <p>Loading...</p>}
+      {isFetching && <p className="text-gray-300">Loading...</p>}
 
       {!isFetching && chartData.length > 0 && (
-        <div className="bg-white p-4 rounded shadow">
+        <div className="bg-black/70 p-4 rounded-lg border border-purple-700 shadow-md">
           <Line
             data={{
               labels: chartData.map((p) => p.date),
@@ -61,20 +61,27 @@ export default function FinanceDashboard() {
                 {
                   label: `${symbol} Close Price`,
                   data: chartData.map((p) => p.close),
-                  borderColor: '#1E3A8A',
-                  backgroundColor: '#1E3A8A33',
+                  borderColor: '#8B5CF6',
+                  backgroundColor: 'rgba(139, 92, 246, 0.3)',
                   fill: true,
-                  tension: 0.3,
+                  tension: 0.4,
                 },
               ],
             }}
             options={{
               responsive: true,
               plugins: {
-                legend: { display: true },
+                legend: {
+                  labels: { color: 'white' },
+                },
               },
               scales: {
-                x: { ticks: { maxTicksLimit: 10 } },
+                x: {
+                  ticks: { color: 'white' },
+                },
+                y: {
+                  ticks: { color: 'white' },
+                },
               },
             }}
           />
